@@ -1,0 +1,15 @@
+service:
+  name: contentchef-sitemap
+plugins:
+  - serverless-webpack
+provider:
+  name: aws
+  region: eu-central-1
+  runtime: nodejs8.10
+functions:
+  generate-sitemap:
+    handler: src/index.default
+    events:
+      - schedule:
+          rate: cron(*/5 * * * ? *)
+          enabled: true

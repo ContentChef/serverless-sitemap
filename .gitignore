@@ -1,0 +1,24 @@
+# log files
+*.log
+
+# mac crap
+.DS_Store
+
+# coverage files
+coverage
+
+# package directories
+node_modules
+jspm_packages
+
+# Jetbrains
+.idea
+
+# Serverless directories
+.serverless
+
+# Webpack directories
+.webpack
+
+#yarn 
+yarn-error.log
