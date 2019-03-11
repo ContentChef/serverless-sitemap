@@ -1,4 +1,6 @@
+import Logger from '@app/Logger';
 import { IXMLSitemapItem } from '@app/XML';
+import ContentChefClient from './ContentChefClient';
 import { ISearchResponse } from '@contentchef/contentchef-node';
 
 export function formatDate(date: string) {
@@ -28,9 +30,20 @@ export function map(item: ISearchResponse): IXMLSitemapItem {
   return { date, url };
 }
 
-export default {
-  formatDate,
-  getDate,
-  isUrl,
-  map,
+export async function searchIndexableContent(): Promise<IXMLSitemapItem[]> {  
+  const clientMethods = ContentChefClient();
+  const result = await clientMethods.search({
+    // targetDate: new Date();
+  });
+
+  if (!result || !result.data) {
+    Logger.info(`No results were found`);
+    return [];
+  }
+
+  Logger.info(`Found ${result.data.length} results`);
+
+  return result.data.map(map);
 }
+
+export default searchIndexableContent;

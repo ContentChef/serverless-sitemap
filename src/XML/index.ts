@@ -24,6 +24,21 @@ export function createSitemap(baseurl: string, items: IXMLSitemapItem[]) {
   return root.end();
 }
 
+export function discardDuplicates(items: IXMLSitemapItem[], filterIfNegativeFn: (item: IXMLSitemapItem) => boolean): IXMLSitemapItem[] {
+  const map = new Map();
+
+  for (let i = 0; i < items.length; i++) {
+    if (filterIfNegativeFn(items[i])) {
+      continue;
+    }
+
+    map.set(items[i].url, items[i]);
+  }
+
+  return Array.from(map.values());
+}
+
 export default {
   createSitemap,
+  discardDuplicates,
 }
