@@ -14,7 +14,7 @@ export default async function generateSitemap(event: any, context: any, callback
       env.publishingStatus = event.publishingStatus;
     }
 
-    Logger.info('Env configuration below')
+    Logger.info('Env configuration below');
     Logger.info(env);
     
     const content = await searchIndexableContent();
