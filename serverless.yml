@@ -7,7 +7,6 @@ provider:
   environment:
     channel: ${opt:channel}
     host: ${opt:host}
-    # publishingStatus: ${opt:publishingStatus}
     S3Bucket:
       Ref: ContentchefSitemap
     S3Filename: ${opt:S3Filename}

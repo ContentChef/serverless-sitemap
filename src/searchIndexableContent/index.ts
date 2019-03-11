@@ -33,7 +33,7 @@ export function map(item: ISearchResponse): IXMLSitemapItem {
 export async function searchIndexableContent(): Promise<IXMLSitemapItem[]> {  
   const clientMethods = ContentChefClient();
   const result = await clientMethods.search({
-    // targetDate: new Date();
+    targetDate: new Date(),
   });
 
   if (!result || !result.data) {
