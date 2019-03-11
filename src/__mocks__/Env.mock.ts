@@ -3,7 +3,7 @@ import getEnv from '@app/Env';
 export default function createMockEnv() {
   const env = getEnv();
 
-  env.S3Bucket = '';
+  env.S3Bucket = 'contentchef-sitemap-dev-contentchefsitemap-1d1pqywi2zqd3';
   env.S3Filename = 'lorem-ipsum.xml'
   env.apiKey = 'qwe';
   env.channel = 'web';

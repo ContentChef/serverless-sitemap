@@ -30,6 +30,8 @@ export default async function generateSitemap(event: any, context: any, callback
     const result = await s3.upload({
       Body: xml,
       Bucket: env.S3Bucket,
+      ContentEncoding: 'UTF-8',
+      ContentType: 'application/xml',
       Key: env.S3Filename,
     }).promise();
 
