@@ -15,7 +15,7 @@ describe(generateSitemap.name, () => {
       result = fnresult;
     });
 
-    await generateSitemap({}, {}, callback);
+    await generateSitemap('staging')({}, {}, callback);
 
     expect(callback).toBeCalled();
     expect(error).toBeNull();
