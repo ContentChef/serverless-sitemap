@@ -5,15 +5,12 @@ const mock =
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
   <url>
     <loc>http://www.example.com/foo.html</loc>
-    <lastmod>2018-06-04</lastmod>
   </url>
   <url>
     <loc>http://www.example.com/bar.html</loc>
-    <lastmod>2018-06-03</lastmod>
   </url>
   <url>
     <loc>http://www.example.com/baz.html</loc>
-    <lastmod>2018-06-02</lastmod>
   </url>
 </urlset>`;
 
@@ -24,15 +21,15 @@ describe('XML', () => {
     const result = xml.createSitemap('http://www.example.com', [
       {
         date: '2018-06-04',
-        url: 'foo.html'
+        url: 'foo.html',
       },
       {
         date: '2018-06-03',
-        url: 'bar.html'
+        url: 'bar.html',
       },
       {
         date: '2018-06-02',
-        url: 'baz.html'
+        url: 'baz.html',
       },
     ]);
 

@@ -1,11 +1,7 @@
 import Logger from '@app/Logger';
 import { IXMLSitemapItem } from '@app/XML';
-import ContentChefClient from './ContentChefClient';
 import { ISearchResponse } from '@contentchef/contentchef-node';
-
-export function formatDate(date: string) {
-  return date.split('T')[0];
-}
+import ContentChefClient from './ContentChefClient';
 
 export function getDate(item: ISearchResponse) {
   if (typeof item.metadata.contentLastModifiedDate === 'string') {
@@ -15,8 +11,32 @@ export function getDate(item: ISearchResponse) {
   return item.metadata.publishedOn;
 }
 
+export function getLinkedContent(item: ISearchResponse): unknown {
+  return item.payload.linkedContents;
+}
+
 export function getURL(item: ISearchResponse): string {
-  return item.publicId;
+  if (!hasPayload(item)) {
+    return '';
+  }
+
+  if ('url' in item.payload) {
+    return item.payload.url;
+  }
+
+  return '';
+}
+
+export function hasLinkedContent(item: ISearchResponse): boolean {
+  if (hasPayload(item)) {
+    return 'linkedContents' in item.payload;
+  }
+
+  return false;
+}
+
+export function hasPayload(item: ISearchResponse): boolean {
+  return 'payload' in item;
 }
 
 export function isUrl(input: string): boolean {
@@ -24,16 +44,19 @@ export function isUrl(input: string): boolean {
 }
 
 export function map(item: ISearchResponse): IXMLSitemapItem {
-  const date = formatDate(getDate(item));
+  const date = getDate(item);
   const url = getURL(item);
 
-  return { date, url };
+  return { 
+    date,
+    url,
+  };
 }
 
 export async function searchIndexableContent(): Promise<IXMLSitemapItem[]> {  
   const clientMethods = ContentChefClient();
   const result = await clientMethods.search({
-    targetDate: new Date(),
+    // targetDate: new Date().toJSON(),
   });
 
   if (!result || !result.data) {
@@ -41,6 +64,7 @@ export async function searchIndexableContent(): Promise<IXMLSitemapItem[]> {
     return [];
   }
 
+  Logger.info(result.data);
   Logger.info(`Found ${result.data.length} results`);
 
   return result.data.map(map);

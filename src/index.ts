@@ -43,6 +43,7 @@ export default async function generateSitemap(event: any, context: any, callback
     callback(null, result.Location);
     
   } catch(error) {
+    Logger.error(error);
     callback(error);
   }
 }
