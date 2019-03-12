@@ -75,7 +75,7 @@ functions:
     handler: src/index.default
     events:
       - schedule:
-          rate: cron(00 04 * * ? *)
+          rate: rate(2 hours)
           enabled: true
     input:
       publishingStatus: "staging"
@@ -83,7 +83,7 @@ functions:
     handler: src/index.default
     events:
       - schedule:
-          rate: cron(00 04 * * ? *)
+          rate: rate(2 hours)
           enabled: true
     input:
       publishingStatus: "live"
