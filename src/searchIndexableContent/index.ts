@@ -65,7 +65,6 @@ export async function searchIndexableContent(env: ReturnType<typeof getEnv>): Pr
     return [];
   }
 
-  Logger.info(result.data);
   Logger.info(`Found ${result.data.length} results`);
 
   return result.data.map(map);
