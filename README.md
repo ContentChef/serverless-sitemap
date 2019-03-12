@@ -1,12 +1,23 @@
 @contentchef/serverless-sitemap
 ===============================
 
+- [@contentchef/serverless-sitemap](#contentchefserverless-sitemap)
+  - [Install](#install)
+  - [Publishing on the stack](#publishing-on-the-stack)
+  - [Testing this lambda locally](#testing-this-lambda-locally)
+
 ## Install
 
 ```shell
 yarn
 # or
 npm i
+```
+
+## Publishing on the stack
+
+```shell
+sls deploy --channel web --host "apihost" --publishingStatus staging|live --spaceId defaultSpace --websiteBaseUrl "hostname" --S3Filename "test-sitemap.xml"
 ```
 
 ## Testing this lambda locally
