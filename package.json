@@ -10,7 +10,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {
-    "@contentchef/contentchef-node": "0.0.6",
+    "@contentchef/contentchef-node": "^0.2.0",
     "aws-sdk": "^2.417.0",
     "lambda-log": "^2.1.0",
     "winston-aws-cloudwatch": "^3.0.0",
