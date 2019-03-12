@@ -2,6 +2,7 @@ import Logger from '@app/Logger';
 import { IXMLSitemapItem } from '@app/XML';
 import { ISearchResponse } from '@contentchef/contentchef-node';
 import ContentChefClient from './ContentChefClient';
+import getEnv from '@app/Env';
 
 export function getDate(item: ISearchResponse) {
   if (typeof item.metadata.contentLastModifiedDate === 'string') {
@@ -53,8 +54,8 @@ export function map(item: ISearchResponse): IXMLSitemapItem {
   };
 }
 
-export async function searchIndexableContent(): Promise<IXMLSitemapItem[]> {  
-  const clientMethods = ContentChefClient();
+export async function searchIndexableContent(env: ReturnType<typeof getEnv>): Promise<IXMLSitemapItem[]> {  
+  const clientMethods = ContentChefClient(env);
   const result = await clientMethods.search({
     // targetDate: new Date().toJSON(),
   });

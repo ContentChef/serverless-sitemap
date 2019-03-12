@@ -17,7 +17,7 @@ export default async function generateSitemap(event: any, context: any, callback
     Logger.info('Env configuration below');
     Logger.info(env);
     
-    const content = await searchIndexableContent();
+    const content = await searchIndexableContent(env);
     const unique = XML.discardDuplicates(content, i => !isUrl(i.url));
     
     Logger.info(`Processing ${content.length - unique.length} results`);

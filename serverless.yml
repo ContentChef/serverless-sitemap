@@ -39,7 +39,7 @@ resources:
         CorsConfiguration:
           CorsRules:
           - AllowedOrigins: 
-            - "*"
+              - "*"
             AllowedMethods: 
               - GET
     IamRole:
@@ -51,7 +51,7 @@ resources:
           - Effect: Allow
             Principal:
               Service:
-              - lambda.amazonaws.com
+                - lambda.amazonaws.com
             Action: sts:AssumeRole
         RoleName: ContentchefSitemapRole
         Policies:
