@@ -1,8 +1,9 @@
 import Logger from '@app/Logger';
 import { IXMLSitemapItem } from '@app/XML';
-import { ISearchResponse } from '@contentchef/contentchef-node';
+import { ISearchResponse, IPaginatedResponse } from '@contentchef/contentchef-node';
 import ContentChefClient from './ContentChefClient';
 import getEnv from '@app/Env';
+import { AxiosResponse } from 'axios';
 
 export function getDate(item: ISearchResponse) {
   if (typeof item.metadata.contentLastModifiedDate === 'string') {
@@ -56,18 +57,40 @@ export function map(item: ISearchResponse): IXMLSitemapItem {
 
 export async function searchIndexableContent(env: ReturnType<typeof getEnv>): Promise<IXMLSitemapItem[]> {  
   const clientMethods = ContentChefClient(env);
-  const result = await clientMethods.search({
-    // targetDate: new Date().toJSON(),
+  const take = 10;
+  const firstCall = await clientMethods.search({
+    take,
+    skip: 0,
   });
 
-  if (!result || !result.data) {
+  if (!firstCall || !firstCall.data) {
     Logger.info(`No results were found`);
     return [];
   }
 
-  Logger.info(`Found ${result.data.length} results`);
+  const totalRecords = firstCall.data.total;
+  const counter = Math.ceil(totalRecords / take);
+  const promises = <Promise<AxiosResponse<IPaginatedResponse<ISearchResponse>>>[]>[];
 
-  return result.data.map(map);
+  for (let i = 1; i < counter; i++) {
+    promises.push(
+      clientMethods.search({
+        take,
+        skip: counter * take,
+      })
+    );
+  }
+
+  const results = (await Promise.all(promises)).reduce((current, next) => {
+    return [
+      ... current,
+      ... next.data.items,
+    ]
+  }, firstCall.data.items);
+
+  Logger.info(`Found ${results.length} results`);
+
+  return results.map(map);
 }
 
 export default searchIndexableContent;
