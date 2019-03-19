@@ -1,9 +1,7 @@
 import create from '@contentchef/contentchef-node';
 import getEnv from '@app/Env';
 
-const ContentChefClient = () => {
-  const env = getEnv();
-
+const ContentChefClient = (env: ReturnType<typeof getEnv>) => {
   return create({
     apiKey: env.apiKey,
     host: env.host,

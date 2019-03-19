@@ -4,12 +4,80 @@ plugins:
   - serverless-webpack
 provider:
   name: aws
+  environment:
+    channel: ${opt:channel}
+    host: ${opt:host}
+    S3Bucket:
+      Ref: ContentchefSitemap
+    S3Filename: ${opt:S3Filename}
+    spaceId: ${opt:spaceId}
+    websiteBaseUrl: ${opt:websiteBaseUrl}
   region: eu-central-1
   runtime: nodejs8.10
+  role: IamRole
+resources:
+  Resources: 
+    ContentchefSitemapPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: 
+          Ref:
+            ContentchefSitemap
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Action: 
+                - s3:GetObject
+              Effect: Allow
+              Principal: "*"
+              Resource:  { "Fn::Join" : ["/", [{ "Fn::GetAtt" : ["ContentchefSitemap", "Arn"] }, "*"] ] }
+    ContentchefSitemap:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl:
+          PublicRead
+        CorsConfiguration:
+          CorsRules:
+          - AllowedOrigins: 
+              - "*"
+            AllowedMethods: 
+              - GET
+    IamRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+        RoleName: ContentchefSitemapRole
+        Policies:
+          - PolicyName: ContentchefSitemapRolePolicy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Action:
+                    - s3:*
+                  Effect: Allow
+                  Resource:  { "Fn::Join" : ["/", [{ "Fn::GetAtt" : ["ContentchefSitemap", "Arn"] }, "*"] ] }
+                - Effect: Allow
+                  Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:DescribeLogStreams
+                  - logs:PutLogEvents
+                  Resource: { "Fn::Join" : [":", ["arn:aws:logs", { "Ref" : "AWS::Region"}, { "Ref" : "AWS::AccountId"}, "*" ] ] }
 functions:
-  generate-sitemap:
-    handler: src/index.default
+  generate-sitemap-staging:
+    handler: src/staging.handler
     events:
       - schedule:
-          rate: cron(*/5 * * * ? *)
-          enabled: true
+          rate: rate(2 hours)
+  generate-sitemap-live:
+    handler: src/live.handler
+    events:
+      - schedule:
+          rate: rate(2 hours)
