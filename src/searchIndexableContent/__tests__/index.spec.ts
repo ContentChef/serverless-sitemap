@@ -5,6 +5,7 @@ describe(`searchIndexableContent`, () => {
     expect(searchIndexableContent.filterRobotNoIndex({})).toBeTruthy();
     expect(searchIndexableContent.filterRobotNoIndex(123)).toBeTruthy();
     expect(searchIndexableContent.filterRobotNoIndex({ seo: 123 })).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: 123 } })).toBeTruthy();
     expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: '' } })).toBeTruthy();
     expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: 'hello-world' } })).toBeTruthy();
     expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: 'hello-world, follow' } })).toBeTruthy();
