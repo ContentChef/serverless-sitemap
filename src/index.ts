@@ -4,7 +4,7 @@ import getEnv from './Env';
 import sdk from 'aws-sdk';
 import Logger from './Logger';
 
-export default function createGenerateSitemap(publishingStatus: string) {
+export default function createGenerateSitemap(publishingStatus: string, sitemapSuffix: string = '') {
   return async (event: any, context: any, callback: any) => {
     try {
       const env = getEnv();
@@ -33,7 +33,7 @@ export default function createGenerateSitemap(publishingStatus: string) {
         Bucket: env.S3Bucket,
         ContentEncoding: 'UTF-8',
         ContentType: 'application/xml',
-        Key: env.S3Filename,
+        Key: env.S3Filename.replace('.xml', sitemapSuffix + '.xml'),
       }).promise();
 
       Logger.info(`

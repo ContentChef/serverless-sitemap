@@ -1,6 +1,6 @@
 import createGenerateSitemap from '.';
 
-const handler = createGenerateSitemap('staging');
+const handler = createGenerateSitemap('staging', '-staging');
 
 export {
   handler,
