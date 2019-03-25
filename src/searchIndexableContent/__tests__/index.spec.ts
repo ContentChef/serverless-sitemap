@@ -28,6 +28,8 @@ describe(`searchIndexableContent`, () => {
 
   test(searchIndexableContent.getURL.name, () => {
     const url = 'foobar';
+    expect(searchIndexableContent.getURL({} as any)).toEqual('');
+    expect(searchIndexableContent.getURL({ payload: {} } as any)).toEqual('');
     expect(searchIndexableContent.getURL({ payload: { url }} as any)).toEqual(url);
   });
 
