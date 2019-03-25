@@ -1,6 +1,16 @@
 import * as searchIndexableContent from '..';
 
 describe(`searchIndexableContent`, () => {  
+  test(searchIndexableContent.filterRobotNoIndex.name, () => {
+    expect(searchIndexableContent.filterRobotNoIndex({})).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex(123)).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex({ seo: 123 })).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: '' } })).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: 'hello-world' } })).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: 'hello-world, follow' } })).toBeTruthy();
+    expect(searchIndexableContent.filterRobotNoIndex({ seo: { robots: 'noindex, follow' } })).toBeFalsy();
+  });
+
   test(searchIndexableContent.getDate.name, () => {
     const contentLastModifiedDate = '1';
     const publishedOn = '2';
