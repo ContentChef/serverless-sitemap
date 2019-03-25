@@ -5,6 +5,26 @@ import ContentChefClient from './ContentChefClient';
 import getEnv from '@app/Env';
 import { AxiosResponse } from 'axios';
 
+export function filterRobotNoIndex(item: unknown): boolean {
+  if (typeof item !== 'object') {
+    return true;
+  }
+
+  if (!(Object.prototype.hasOwnProperty.call(item, 'seo'))) {
+    return true;
+  }
+
+  if (!(Object.prototype.hasOwnProperty.call((item as any).seo, 'robots'))) {
+    return true;
+  }
+
+  if (typeof (item as any).seo.robots !== 'string') {
+    return true;
+  }
+
+  return (item as any).seo.robots.indexOf('noindex') < 0;
+}
+
 export function getDate(item: ISearchResponse) {
   if (typeof item.metadata.contentLastModifiedDate === 'string') {
     return item.metadata.contentLastModifiedDate;

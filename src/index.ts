@@ -1,5 +1,5 @@
 import XML from '@app/XML';
-import searchIndexableContent, { isUrl } from '@app/searchIndexableContent';
+import * as searchIndexableContent from '@app/searchIndexableContent';
 import getEnv from './Env';
 import sdk from 'aws-sdk';
 import Logger from './Logger';
@@ -16,8 +16,10 @@ export default function createGenerateSitemap(publishingStatus: string) {
       Logger.info('Env configuration below');
       Logger.info(env);
 
-      const content = await searchIndexableContent(env);
-      const unique = XML.discardDuplicates(content, i => !isUrl(i.url));
+      const content = await searchIndexableContent.searchIndexableContent(env);
+      const unique = XML.discardDuplicates(content, i => 
+        !searchIndexableContent.isUrl(i.url) && searchIndexableContent.filterRobotNoIndex(i)
+      );
 
       Logger.info(`Processing ${content.length - unique.length} results`);
 
