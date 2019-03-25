@@ -1,6 +1,6 @@
 import Logger from '@app/Logger';
 import { IXMLSitemapItem } from '@app/XML';
-import { ISearchResponse, IPaginatedResponse } from '@contentchef/contentchef-node';
+import { ISearchResponse, IPaginatedResponse, LogicalOperators, Operators } from '@contentchef/contentchef-node';
 import ContentChefClient from './ContentChefClient';
 import getEnv from '@app/Env';
 import { AxiosResponse } from 'axios';
@@ -61,6 +61,16 @@ export async function searchIndexableContent(env: ReturnType<typeof getEnv>): Pr
   const firstCall = await clientMethods.search({
     take,
     skip: 0,
+    propFilters: {
+      condition: LogicalOperators.OR,
+      items: [
+        {
+          field: 'url',
+          operator: Operators.STARTS_WITH,
+          value: '/',
+        },
+      ]
+    }
   });
 
   if (!firstCall || !firstCall.data) {
