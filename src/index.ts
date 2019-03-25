@@ -21,7 +21,7 @@ export default function createGenerateSitemap(publishingStatus: string) {
         !searchIndexableContent.isUrl(i.url) && searchIndexableContent.filterRobotNoIndex(i)
       );
 
-      Logger.info(`Processing ${content.length - unique.length} results`);
+      Logger.info(`Processing ${unique.length} results`);
 
       const xml = XML.createSitemap(env.websiteBaseUrl, unique);
       const s3 = new sdk.S3({
