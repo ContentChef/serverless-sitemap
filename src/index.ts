@@ -16,11 +16,12 @@ export default function createGenerateSitemap(publishingStatus: PublishingStatus
       Logger.info(`${env}`);
 
       const content = await searchIndexableContent.searchIndexableContent(env, publishingStatus);
-      const unique = XML.discardDuplicates(content, i => 
-        !searchIndexableContent.isUrl(i.url) && searchIndexableContent.filterRobotNoIndex(i)
+      const unique = XML.discardDuplicates(
+          content,
+              i => !searchIndexableContent.filterRobotNoIndex(i)
       );
 
-      Logger.info(`Processing ${content.length - unique.length} results`);
+      Logger.info(`Processing ${unique.length} results`);
 
       const xml = XML.createSitemap(env.websiteBaseUrl, unique);
       const s3 = new sdk.S3({

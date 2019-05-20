@@ -112,7 +112,17 @@ export async function searchIndexableContent(env: ReturnType<typeof getEnv>, pub
     promises.push(
       clientMethods.search({
         take,
-        skip: counter * take,
+        skip: i * take,
+        propFilters: {
+          condition: LogicalOperators.OR,
+          items: [
+            {
+              field: 'url',
+              operator: Operators.STARTS_WITH,
+              value: '/',
+            },
+          ]
+        }
       })
     );
   }
