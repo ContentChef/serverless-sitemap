@@ -1,5 +1,6 @@
 import generateSitemap from '..';
 import createMockEnv from '@app/__mocks__/Env.mock';
+import { PublishingStatus } from "@contentchef/contentchef-node";
 
 beforeAll(() => {
   process.env = createMockEnv();
@@ -15,7 +16,7 @@ describe(generateSitemap.name, () => {
       result = fnresult;
     });
 
-    await generateSitemap('staging')({}, {}, callback);
+    await generateSitemap(PublishingStatus.Staging)({}, {}, callback);
 
     expect(callback).toBeCalled();
     expect(error).toBeNull();

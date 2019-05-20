@@ -3,20 +3,19 @@ import * as searchIndexableContent from '@app/searchIndexableContent';
 import getEnv from './Env';
 import sdk from 'aws-sdk';
 import Logger from './Logger';
+import { PublishingStatus } from "@contentchef/contentchef-node";
 
-export default function createGenerateSitemap(publishingStatus: string) {
+export default function createGenerateSitemap(publishingStatus: PublishingStatus) {
   return async (event: any, context: any, callback: any) => {
     try {
       const env = getEnv();
 
       Logger.info(event);
 
-      env.publishingStatus = publishingStatus;
-
       Logger.info('Env configuration below');
-      Logger.info(env);
+      Logger.info(`${env}`);
 
-      const content = await searchIndexableContent.searchIndexableContent(env);
+      const content = await searchIndexableContent.searchIndexableContent(env, publishingStatus);
       const unique = XML.discardDuplicates(content, i => 
         !searchIndexableContent.isUrl(i.url) && searchIndexableContent.filterRobotNoIndex(i)
       );
@@ -33,7 +32,7 @@ export default function createGenerateSitemap(publishingStatus: string) {
         Bucket: env.S3Bucket,
         ContentEncoding: 'UTF-8',
         ContentType: 'application/xml',
-        Key: env.S3Filename,
+        Key: `${publishingStatus}-${env.S3Filename}`,
       }).promise();
 
       Logger.info(`

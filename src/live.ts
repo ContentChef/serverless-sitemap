@@ -1,6 +1,7 @@
 import createGenerateSitemap from '.';
+import { PublishingStatus } from "@contentchef/contentchef-node";
 
-const handler = createGenerateSitemap('live');
+const handler = createGenerateSitemap(PublishingStatus.Live);
 
 export {
   handler,

@@ -3,7 +3,6 @@ export default function getEnv() {
     apiKey: '12345678',
     channel: process.env.channel as string,
     host: process.env.host as string,
-    publishingStatus: process.env.publishingStatus as any,
     S3Bucket: process.env.S3Bucket as string,
     S3Filename: process.env.S3Filename as string,
     spaceId: process.env.spaceId as string,

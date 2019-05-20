@@ -1,6 +1,12 @@
 import Logger from '@app/Logger';
 import { IXMLSitemapItem } from '@app/XML';
-import { ISearchResponse, IPaginatedResponse, LogicalOperators, Operators } from '@contentchef/contentchef-node';
+import {
+  ISearchResponse,
+  IPaginatedResponse,
+  LogicalOperators,
+  Operators,
+  PublishingStatus
+} from '@contentchef/contentchef-node';
 import ContentChefClient from './ContentChefClient';
 import getEnv from '@app/Env';
 import { AxiosResponse } from 'axios';
@@ -75,8 +81,8 @@ export function map(item: ISearchResponse): IXMLSitemapItem {
   };
 }
 
-export async function searchIndexableContent(env: ReturnType<typeof getEnv>): Promise<IXMLSitemapItem[]> {  
-  const clientMethods = ContentChefClient(env);
+export async function searchIndexableContent(env: ReturnType<typeof getEnv>, publishingStatus: PublishingStatus): Promise<IXMLSitemapItem[]> {
+  const clientMethods = ContentChefClient(env, publishingStatus);
   const take = 10;
   const firstCall = await clientMethods.search({
     take,
