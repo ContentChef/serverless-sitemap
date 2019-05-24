@@ -20,7 +20,6 @@ Parameters for deployment
 
 * **--channel** is the Content Chef's publishing channel you wish to map
 * **--host** is the rest endpoint base url
-* **--publishingStatus** is the content publishing status (choose `staging` or `live`)
 * **--S3Filename** is the name used for your generated sitemap.
 * **--spaceId** is the Content Chef's space id you wish to map
 * **--websiteBaseUrl** is the website base url (e.g. https://my-website.com/)

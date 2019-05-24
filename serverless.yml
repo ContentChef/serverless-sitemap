@@ -12,9 +12,10 @@ provider:
     S3Filename: ${opt:S3Filename}
     spaceId: ${opt:spaceId}
     websiteBaseUrl: ${opt:websiteBaseUrl}
-  region: eu-central-1
+  region: ${opt:region, 'eu-central-1'}
   runtime: nodejs8.10
   role: IamRole
+  stage: ${opt:stage, 'dev'}
 resources:
   Resources: 
     ContentchefSitemapPolicy:
@@ -53,7 +54,7 @@ resources:
               Service:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
-        RoleName: ContentchefSitemapRole
+        RoleName: "${self:service}-${self:provider.stage}-${self:provider.region}-LambdaRole"
         Policies:
           - PolicyName: ContentchefSitemapRolePolicy
             PolicyDocument:
